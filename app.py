@@ -86,6 +86,7 @@ def upload_file():
         highest_watch_hour_date = df.groupby('date').size().idxmax()
         total_watch_hours = df['hour'].value_counts().sort_index()
         frequency_most_replayed = df['title'].value_counts().max()
+        most_replayed_video = df['title'].value_counts().idxmax() 
         
         # Visualization
         color_palette = sns.color_palette("viridis", as_cmap=True)
@@ -146,6 +147,8 @@ def upload_file():
             'total_time_per_year_plot_path': total_time_per_year_plot_path,
             'total_watch_hours_plot_path': total_watch_hours_plot_path,
             'frequency_most_replayed': frequency_most_replayed, 
+            'most_replayed_video': most_replayed_video,
+            
         }
 
         os.remove(file_path)

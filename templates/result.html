@@ -7,29 +7,30 @@
     <h1>Exploratory Data Analysis Result</h1>
     <p>Top Channel: {{ result.top_channel }}</p>
 
-    <h2>Total Time Spent per Month</h2>
+    <h2>Total Videos Watched per Month</h2>
     <ul>
         {% for month, count in result.total_time_per_month.items() %}
         <li>{{ month }}: {{ count }}</li>
         {% endfor %}
     </ul>
 
-    <h2>Total Time Spent per Year</h2>
+    <h2>Total Videos Watched per Year</h2>
     <ul>
         {% for year, count in result.total_time_per_year.items() %}
         <li>{{ year }}: {{ count }}</li>
         {% endfor %}
     </ul>
 
-    <p>Highest Watch Hour Date: {{ result.highest_watch_hour_date }}</p>
+    <p>Highest Watch Date: {{ result.highest_watch_hour_date }}</p>
 
-    <h2>Total Watch Hours</h2>
+    <!-- <h2>Total Watch Hours</h2>
     <ul>
         {% for hour, count in result.total_watch_hours.items() %}
         <li>{{ hour }}: {{ count }}</li>
         {% endfor %}
-    </ul>
-
+    </ul> -->
+    <h2>Most Frequently Replayed Video</h2>
+    <p>Most Frequently Replayed Video: {{ result.frequency_most_replayed }}</p>
     <h2>Visualizations</h2>
     <div>
         <h3>Top Channels Watched</h3>

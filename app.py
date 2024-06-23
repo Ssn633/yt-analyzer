@@ -80,19 +80,20 @@ def upload_file():
         df['year'] = df['time'].dt.year
 
         # Analysis
-        top_channel_counts = df['subtitles'].apply(lambda x: x[0]['name'] if isinstance(x, list) else None).value_counts()
+        top_channel_counts = df['subtitles'].apply(lambda x: x[0]['name'] if isinstance(x, list) else None).value_counts().head(10)
         total_time_per_month = df.groupby('month').size()
         total_time_per_year = df.groupby('year').size()
         highest_watch_hour_date = df.groupby('date').size().idxmax()
         total_watch_hours = df['hour'].value_counts().sort_index()
-
+        frequency_most_replayed = df['title'].value_counts().max()
+        
         # Visualization
         color_palette = sns.color_palette("viridis", as_cmap=True)
 
         # 1. Top Channel Bar Chart
         plt.figure(figsize=(10, 6))
         sns.barplot(x=top_channel_counts.index, y=top_channel_counts.values)
-        plt.title("Top Channels Watched")
+        plt.title("Top 10 Channels Watched")
         plt.xlabel("Channel Name")
         plt.ylabel("Number of Videos Watched")
         plt.xticks(rotation=45, ha='right')
@@ -104,9 +105,9 @@ def upload_file():
         # 2. Total Time Watched Per Month Line Chart
         plt.figure(figsize=(10, 6))
         total_time_per_month.plot(kind='line', marker='o', color=color_palette(0.5))
-        plt.title("Total Time Watched Per Month")
+        plt.title("Total Videos Watched Per Month")
         plt.xlabel("Month")
-        plt.ylabel("Total Time Watched")
+        plt.ylabel("Total Videos Watched")
         plt.grid(True)
         total_time_per_month_plot_path = os.path.join(app.config['RESULT_FOLDER'], 'total_time_per_month_plot.png')
         plt.savefig(total_time_per_month_plot_path)
@@ -115,9 +116,9 @@ def upload_file():
         # 3. Total Time Watched Per Year Bar Chart
         plt.figure(figsize=(10, 6))
         total_time_per_year.plot(kind='bar', color=color_palette(0.5))
-        plt.title("Total Time Watched Per Year")
+        plt.title("Total Videos Watched Per Year")
         plt.xlabel("Year")
-        plt.ylabel("Total Time Watched")
+        plt.ylabel("Total Videos Watched")
         plt.xticks(rotation=0)
         total_time_per_year_plot_path = os.path.join(app.config['RESULT_FOLDER'], 'total_time_per_year_plot.png')
         plt.savefig(total_time_per_year_plot_path)
@@ -126,7 +127,7 @@ def upload_file():
         # 4. Watch Time Distribution by Hour
         plt.figure(figsize=(10, 6))
         total_watch_hours.plot(kind='bar', color=color_palette(0.5))
-        plt.title("Watch Time Distribution by Hour")
+        plt.title("Watch Videos Distribution by Hour")
         plt.xlabel("Hour of the Day")
         plt.ylabel("Number of Videos Watched")
         plt.xticks(rotation=0)
@@ -144,6 +145,7 @@ def upload_file():
             'total_time_per_month_plot_path': total_time_per_month_plot_path,
             'total_time_per_year_plot_path': total_time_per_year_plot_path,
             'total_watch_hours_plot_path': total_watch_hours_plot_path,
+            'frequency_most_replayed': frequency_most_replayed, 
         }
 
         os.remove(file_path)

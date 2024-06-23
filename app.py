@@ -19,28 +19,28 @@ app.config['RESULT_FOLDER'] = RESULT_FOLDER
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['RESULT_FOLDER'], exist_ok=True)
 
-def delete_old_files():
-    while True:
-        try:
-            now = time.time()
-            for filename in os.listdir(app.config['RESULT_FOLDER']):
-                file_path = os.path.join(app.config['RESULT_FOLDER'], filename)
-                if os.path.isfile(file_path):
-                    # Get file creation time
-                    creation_time = os.path.getctime(file_path)
-                    # Check if file is older than 5 minutes
-                    if (now - creation_time) > (5 * 60):  # 5 minutes = 5 * 60 seconds
-                        os.remove(file_path)
-                        # print(f"Deleted old file: {filename}")
-        except Exception as e:
-            print()
-            # print(f"Error deleting old files: {e}")
-        time.sleep(300)  # Sleep for 5 minutes (300 seconds)
+# def delete_old_files():
+#     while True:
+#         try:
+#             now = time.time()
+#             for filename in os.listdir(app.config['RESULT_FOLDER']):
+#                 file_path = os.path.join(app.config['RESULT_FOLDER'], filename)
+#                 if os.path.isfile(file_path):
+#                     # Get file creation time
+#                     creation_time = os.path.getctime(file_path)
+#                     # Check if file is older than 5 minutes
+#                     if (now - creation_time) > (5 * 60):  # 5 minutes = 5 * 60 seconds
+#                         os.remove(file_path)
+#                         # print(f"Deleted old file: {filename}")
+#         except Exception as e:
+#             print()
+#             # print(f"Error deleting old files: {e}")
+#         time.sleep(300)  # Sleep for 5 minutes (300 seconds)
 
 # Start background thread for deleting old files
-delete_thread = threading.Thread(target=delete_old_files)
-delete_thread.daemon = True
-delete_thread.start()
+# delete_thread = threading.Thread(target=delete_old_files)
+# delete_thread.daemon = True
+# delete_thread.start()
 
 def is_from_google_ads(details):
     if isinstance(details, list):

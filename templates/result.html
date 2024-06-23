@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EDA Result</title>
+</head>
+<body>
+    <h1>Exploratory Data Analysis Result</h1>
+    <p>Top Channel: {{ result.top_channel }}</p>
+
+    <h2>Total Time Spent per Month</h2>
+    <ul>
+        {% for month, count in result.total_time_per_month.items() %}
+        <li>{{ month }}: {{ count }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Total Time Spent per Year</h2>
+    <ul>
+        {% for year, count in result.total_time_per_year.items() %}
+        <li>{{ year }}: {{ count }}</li>
+        {% endfor %}
+    </ul>
+
+    <p>Highest Watch Hour Date: {{ result.highest_watch_hour_date }}</p>
+
+    <h2>Total Watch Hours</h2>
+    <ul>
+        {% for hour, count in result.total_watch_hours.items() %}
+        <li>{{ hour }}: {{ count }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Visualizations</h2>
+    <div>
+        <h3>Top Channels Watched</h3>
+        <img src="{{ url_for('static', filename='results/top_channel_plot.png') }}" alt="Top Channels Watched">
+    </div>
+    <div>
+        <h3>Total Time Watched Per Month</h3>
+        <img src="{{ url_for('static', filename='results/total_time_per_month_plot.png') }}" alt="Total Time Watched Per Month">
+    </div>
+    <div>
+        <h3>Total Time Watched Per Year</h3>
+        <img src="{{ url_for('static', filename='results/total_time_per_year_plot.png') }}" alt="Total Time Watched Per Year">
+    </div>
+    <div>
+        <h3>Watch Time Distribution by Hour</h3>
+        <img src="{{ url_for('static', filename='results/total_watch_hours_plot.png') }}" alt="Watch Time Distribution by Hour">
+    </div>
+</body>
+</html>

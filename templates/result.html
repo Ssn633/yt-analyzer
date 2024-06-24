@@ -31,23 +31,28 @@
     </ul> -->
     <h2>Most Frequently Replayed Video</h2>
     <p>Most Frequently Replayed Video: {{ result.frequency_most_replayed }}</p>
-    <p>Most Replayed Video : {{  result.most_replayed_video  }}</p>
+    <p>Most Replayed Video: {{ result.most_replayed_video }}</p>
+
     <h2>Visualizations</h2>
     <div>
         <h3>Top Channels Watched</h3>
-        <img src="{{ url_for('static', filename='results/top_channel_plot.png') }}" alt="Top Channels Watched">
+        <img src="data:image/png;base64,{{ result.top_channel_plot }}" alt="Top Channels Watched">
     </div>
     <div>
         <h3>Total Time Watched Per Month</h3>
-        <img src="{{ url_for('static', filename='results/total_time_per_month_plot.png') }}" alt="Total Time Watched Per Month">
+        <img src="data:image/png;base64,{{ result.total_time_per_month_plot }}" alt="Total Time Watched Per Month">
     </div>
     <div>
         <h3>Total Time Watched Per Year</h3>
-        <img src="{{ url_for('static', filename='results/total_time_per_year_plot.png') }}" alt="Total Time Watched Per Year">
+        <img src="data:image/png;base64,{{ result.total_time_per_year_plot }}" alt="Total Time Watched Per Year">
     </div>
     <div>
         <h3>Watch Time Distribution by Hour</h3>
-        <img src="{{ url_for('static', filename='results/total_watch_hours_plot.png') }}" alt="Watch Time Distribution by Hour">
+        <img src="data:image/png;base64,{{ result.total_watch_hours_plot }}" alt="Watch Time Distribution by Hour">
+    </div>
+
+    <div>
+        <a href="{{ url_for('index') }}"><button>Upload Another File</button></a>
     </div>
 </body>
 </html>

@@ -12,3 +12,7 @@
  </ol>
 
  
+
+
+https://github.com/Ssn633/yt-analyzer/assets/96828245/30632eea-9639-4be7-9984-254141ae5c60
+

@@ -72,12 +72,13 @@ def upload_file():
             most_repeated_ads = google_ads_titles[google_ads_titles == max_frequency].index.tolist()
 
             # Visualization
-            color_palette = sns.color_palette("viridis", as_cmap=True)
+            custom_color = '#111827'
+            # sns.set_palette(sns.color_palette([custom_color]))
 
             # Function to create and return base64-encoded image
             def create_plot(fig):
                 buf = io.BytesIO()
-                fig.savefig(buf, format='png')
+                fig.savefig(buf, format='png',transparent=True )
                 buf.seek(0)
                 img_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
                 buf.close()
@@ -85,7 +86,7 @@ def upload_file():
 
             # 1. Top Channel Bar Chart
             fig, ax = plt.subplots(figsize=(10, 6))
-            sns.barplot(x=top_channel_counts.index, y=top_channel_counts.values, ax=ax)
+            sns.barplot(x=top_channel_counts.index, y=top_channel_counts.values, ax=ax, color=custom_color)
             ax.set_title("Top 10 Channels Watched")
             ax.set_xlabel("Channel Name")
             ax.set_ylabel("Number of Videos Watched")
@@ -96,7 +97,7 @@ def upload_file():
 
             # 2. Total Time Watched Per Month Line Chart
             fig, ax = plt.subplots(figsize=(10, 6))
-            total_time_per_month.plot(kind='line', marker='o', color=color_palette(0.5), ax=ax)
+            total_time_per_month.plot(kind='line', marker='o', color=custom_color, ax=ax)
             ax.set_title("Total Videos Watched Per Month")
             ax.set_xlabel("Month")
             ax.set_ylabel("Total Videos Watched")
@@ -106,7 +107,7 @@ def upload_file():
 
             # 3. Total Time Watched Per Year Bar Chart
             fig, ax = plt.subplots(figsize=(10, 6))
-            total_time_per_year.plot(kind='bar', color=color_palette(0.5), ax=ax)
+            total_time_per_year.plot(kind='bar', color=custom_color, ax=ax)
             ax.set_title("Total Videos Watched Per Year")
             ax.set_xlabel("Year")
             ax.set_ylabel("Total Videos Watched")
@@ -116,7 +117,7 @@ def upload_file():
 
             # 4. Watch Time Distribution by Hour
             fig, ax = plt.subplots(figsize=(10, 6))
-            total_watch_hours.plot(kind='bar', color=color_palette(0.5), ax=ax)
+            total_watch_hours.plot(kind='bar', color=custom_color, ax=ax)
             ax.set_title("Watch Videos Distribution by Hour")
             ax.set_xlabel("Hour of the Day")
             ax.set_ylabel("Number of Videos Watched")

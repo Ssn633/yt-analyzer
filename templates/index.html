@@ -2,13 +2,16 @@
 <html>
 <head>
     <title>Upload Page</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
-    <h1>Upload a File</h1>
-    <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".json">
-        <input type="submit" value="Upload">
-    </form>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg max-w-md">
+        <h1 class="text-2xl font-bold mb-4">Upload a File</h1>
+        <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" class="space-y-4">
+            <input type="file" name="file" accept=".json" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+            <input type="submit" value="Upload" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 cursor-pointer transition">
+        </form>
+    </div>
 </body>
 </html>

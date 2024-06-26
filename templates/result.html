@@ -2,57 +2,137 @@
 <html>
 <head>
     <title>EDA Result</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .minus-5pt {
+    width: calc(100% - 15px); /* Adjust as needed */
+}
+    </style>
 </head>
-<body>
-    <h1>Exploratory Data Analysis Result</h1>
-    <p>Top Channel: {{ result.top_channel }}</p>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg max-w-4xl">
+        <h1 class="text-2xl font-bold mb-4">Exploratory Data Analysis Result</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <div class="bg-gray-100 p-4 rounded-lg">
+                <p><strong>Top Channel:</strong> {{ result.top_channel }}</p>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg">
+                <h2 class="text-lg font-semibold">Total Videos Watched per Month</h2>
+                <ul class="list-disc list-inside">
+                    {% for month, count in result.total_time_per_month.items() %}
+                    <li>{{ month }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg">
+                <h2 class="text-lg font-semibold">Total Videos Watched per Year</h2>
+                <ul class="list-disc list-inside">
+                    {% for year, count in result.total_time_per_year.items() %}
+                    <li>{{ year }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg">
+                <p><strong>Highest Watch Date:</strong> {{ result.highest_watch_hour_date }}</p>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg">
+                <h2 class="text-lg font-semibold">Most Frequently Replayed Video</h2>
+                <p><strong>Most Frequently Replayed Video:</strong> {{ result.frequency_most_replayed }}</p>
+                <p><strong>Most Replayed Video:</strong> {{ result.most_replayed_video }}</p>
+            </div>
+            <div class="bg-gray-100 p-4 rounded-lg">
+                <h2 class="text-lg font-semibold">Google Ads Data</h2>
+                <p><strong>Total Google Ads Viewed:</strong> {{ result.google_ads_count }}</p>
+                <p><strong>Most Repeated Google Ads:</strong></p>
+                <ul class="list-disc list-inside">
+                    {% for ad in result.most_repeated_ads %}
+                    {% set formatted_ad = ad.replace("_", " ").replace("Watched ", "") %}
+                    <li class="mb-2 overflow-auto">{{ formatted_ad }} (Frequency: {{ result.max_frequency }})</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+        </div>
 
-    <h2>Total Videos Watched per Month</h2>
-    <ul>
-        {% for month, count in result.total_time_per_month.items() %}
-        <li>{{ month }}: {{ count }}</li>
-        {% endfor %}
-    </ul>
+        <h2 class="text-xl font-semibold mb-2">Visualizations</h2>
+        <div class="relative">
+            <div class="slide">
+                <h3 class="text-lg font-semibold mb-2">Top Channels Watched</h3>
+                <img src="data:image/png;base64,{{ result.top_channel_plot }}" alt="Top Channels Watched" class="w-full minus-5pt">
+            </div>
+            <div class="slide hidden">
+                <h3 class="text-lg font-semibold mb-2">Total Time Watched Per Month</h3>
+                <img src="data:image/png;base64,{{ result.total_time_per_month_plot }}" alt="Total Time Watched Per Month" class="w-full minus-5pt">
+            </div>
+            <div class="slide hidden">
+                <h3 class="text-lg font-semibold mb-2">Total Time Watched Per Year</h3>
+                <img src="data:image/png;base64,{{ result.total_time_per_year_plot }}" alt="Total Time Watched Per Year" class="w-full minus-5pt">
+            </div>
+            <div class="slide hidden">
+                <h3 class="text-lg font-semibold mb-2">Watch Time Distribution by Hour</h3>
+                <img src="data:image/png;base64,{{ result.total_watch_hours_plot }}" alt="Watch Time Distribution by Hour" class="w-full minus-5pt">
+            </div>
+            <button class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-transparent text-black p-2 hover:bg-gray-800 hover:text-white transition" onclick="moveSlide(-1)">&#10094;</button>
+            <button class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-transparent text-black p-2 hover:bg-gray-800 hover:text-white transition" onclick="moveSlide(1)">&#10095;</button>
+        </div>
+        <div class="flex justify-center mt-4">
+            <span class="dot w-3 h-3 mx-1 rounded-full bg-black round-xl" onclick="currentSlide(1)"></span>
+            <span class="dot w-3 h-3 mx-1 rounded-full bg-white" onclick="currentSlide(2)"></span>
+            <span class="dot w-3 h-3 mx-1 rounded-full bg-white" onclick="currentSlide(3)"></span>
+            <span class="dot w-3 h-3 mx-1 rounded-full bg-white" onclick="currentSlide(4)"></span>
+        </div>
 
-    <h2>Total Videos Watched per Year</h2>
-    <ul>
-        {% for year, count in result.total_time_per_year.items() %}
-        <li>{{ year }}: {{ count }}</li>
-        {% endfor %}
-    </ul>
-
-    <p>Highest Watch Date: {{ result.highest_watch_hour_date }}</p>
-
-    <!-- <h2>Total Watch Hours</h2>
-    <ul>
-        {% for hour, count in result.total_watch_hours.items() %}
-        <li>{{ hour }}: {{ count }}</li>
-        {% endfor %}
-    </ul> -->
-    <h2>Most Frequently Replayed Video</h2>
-    <p>Most Frequently Replayed Video: {{ result.frequency_most_replayed }}</p>
-    <p>Most Replayed Video: {{ result.most_replayed_video }}</p>
-
-    <h2>Visualizations</h2>
-    <div>
-        <h3>Top Channels Watched</h3>
-        <img src="data:image/png;base64,{{ result.top_channel_plot }}" alt="Top Channels Watched">
+        <div class="text-center mt-6">
+            <a href="{{ url_for('index') }}">
+                <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
+                    Upload Another File
+                </button>
+            </a>
+        </div>
     </div>
-    <div>
-        <h3>Total Time Watched Per Month</h3>
-        <img src="data:image/png;base64,{{ result.total_time_per_month_plot }}" alt="Total Time Watched Per Month">
-    </div>
-    <div>
-        <h3>Total Time Watched Per Year</h3>
-        <img src="data:image/png;base64,{{ result.total_time_per_year_plot }}" alt="Total Time Watched Per Year">
-    </div>
-    <div>
-        <h3>Watch Time Distribution by Hour</h3>
-        <img src="data:image/png;base64,{{ result.total_watch_hours_plot }}" alt="Watch Time Distribution by Hour">
-    </div>
 
-    <div>
-        <a href="{{ url_for('index') }}"><button>Upload Another File</button></a>
-    </div>
+    <script>
+        let slideIndex = 1;
+        showSlide(slideIndex);
+        // change slide with the prev/next button
+        function moveSlide(moveStep) {
+            showSlide(slideIndex += moveStep);
+        }
+        // change slide with the dots
+        function currentSlide(n) {
+            showSlide(slideIndex = n);
+        }
+
+        function showSlide(n) {
+            let i;
+            const slides = document.getElementsByClassName("slide");
+            const dots = document.getElementsByClassName('dot');
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+            // hide all slides
+            for (i = 0; i < slides.length; i++) {
+                slides[i].classList.add('hidden');
+            }
+            // remove active status from all dots
+            for (i = 0; i < dots.length; i++) {
+                dots[i].classList.remove('bg-black');
+                dots[i].classList.add('bg-white');
+            }
+            // show the active slide
+            slides[slideIndex - 1].classList.remove('hidden');
+            // highlight the active dot
+            dots[slideIndex - 1].classList.remove('bg-white');
+            dots[slideIndex - 1].classList.add('bg-black');
+        }
+
+        setInterval(() => {
+            moveSlide(1);
+        }, 5000);
+    </script>
 </body>
 </html>

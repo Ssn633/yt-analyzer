@@ -46,6 +46,7 @@ def upload_file():
             df = pd.read_json(file_path)
 
             # Filter out entries from Google Ads
+            df_add = df[df['details'].apply(is_from_google_ads)]
             df = df[~df['details'].apply(is_from_google_ads)]
 
             # Time conversion
@@ -63,6 +64,12 @@ def upload_file():
             total_watch_hours = df['hour'].value_counts().sort_index()
             frequency_most_replayed = df['title'].value_counts().max()
             most_replayed_video = df['title'].value_counts().idxmax() 
+
+            # Calculate total number of Google Ads viewed
+            google_ads_count = len(df_add)
+            google_ads_titles = df_add['title'].value_counts()
+            max_frequency = google_ads_titles.max()
+            most_repeated_ads = google_ads_titles[google_ads_titles == max_frequency].index.tolist()
 
             # Visualization
             color_palette = sns.color_palette("viridis", as_cmap=True)
@@ -129,6 +136,9 @@ def upload_file():
                 'total_watch_hours_plot': total_watch_hours_plot,
                 'frequency_most_replayed': frequency_most_replayed, 
                 'most_replayed_video': most_replayed_video,
+                'google_ads_count': google_ads_count,
+                'most_repeated_ads': most_repeated_ads,
+                'max_frequency': max_frequency,
             }
 
             os.remove(file_path)

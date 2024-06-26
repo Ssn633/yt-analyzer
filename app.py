@@ -50,7 +50,7 @@ def upload_file():
             df = df[~df['details'].apply(is_from_google_ads)]
 
             # Time conversion
-            df['time'] = pd.to_datetime(df['time'], utc=True).dt.tz_convert('Asia/Kolkata')
+            df['time'] = pd.to_datetime(df['time'], utc=True, format='mixed').dt.tz_convert('Asia/Kolkata')
             df['date'] = df['time'].dt.date
             df['hour'] = df['time'].dt.hour
             df['month'] = df['time'].dt.to_period('M')

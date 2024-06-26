@@ -3,15 +3,63 @@
 <head>
     <title>Upload Page</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Hide scrollbar for all browsers except Firefox */
+        body {
+            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
+
+        /* Hide scrollbar for WebKit based browsers */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
-<body class="flex items-center justify-center h-screen bg-gray-100">
-    <div class="container mx-auto bg-white p-6 rounded-lg shadow-lg max-w-md">
+<body class="font-sans">
+    <div class="flex h-screen bg-gray-600  items-center justify-center">
+    <div class="container mx-auto bg-gray-400 text-gray-800 p-6 rounded-lg shadow-lg max-w-md">
+        <h1 class="text-2xl font-bold">Analyze your Youtube data</h1>
+        <p class="mb-4">Follow these steps to upload your YouTube data:</p>
+
+    <ol class="list-decimal list-inside mb-6">
+        <li>Go to <a href="https://takeout.google.com/" class="text-blue-600 hover:underline" target="_blank">https://takeout.google.com/</a></li>
+        <li>Deselect all services and select YouTube</li>
+        <li>In the file format options, select .json for history</li>
+        <li>Wait for the report to get generated and Download the data and extract the files</li>
+        <li>Upload the extracted files here</li>
+    </ol>
+
+    <p class="mb-4">For a visual guide, you can refer to <a href="https://www.youtube.com/watch?v=examplevideo" class="text-blue-500 hover:underline" target="_blank">this video</a>.</p>
+
+
+    </div>
+    <div class="container mx-auto bg-gray-400  p-6 rounded-lg shadow-lg max-w-md">
         <h1 class="text-2xl font-bold mb-4">Upload a File</h1>
         <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" class="space-y-4">
-            <input type="file" name="file" accept=".json" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-            <input type="submit" value="Upload" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 cursor-pointer transition">
+            <input type="file" name="file" accept=".json" class="block w-full text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+            <input type="submit" value="Upload" class="w-full bg-gray-200 text-gray-900 py-2 px-4 rounded hover:text-gray-200 hover:bg-gray-900 cursor-pointer transition">
         </form>
     </div>
+    </div>
+    <footer id="Contact"
+    class="p-4  items-center  shadow md:flex md:items-center md:justify-between md:p-6 bg-gray-900">
+    <span
+        class="flex flex-wrap items-center justify-center mt-3 text-sm text-gray-500 text-gray-400 sm:mt-0">Made
+        by Swamynath
+    </span>
+    <span
+                class="flex flex-wrap items-center justify-center mt-3 space-x-3 sm:space-x-2 md:space-x-2 text-sm text-gray-500 text-gray-400 sm:mt-0">
+                <a target="_blank" href="https://github.com/Ssn633"><img src="/static/Img/icons8-github-32.png"
+                        class="text-base"></a>
+                <a target="_blank" href="https://www.linkedin.com/in/swamynath-s-5139b2191/"><img
+                        src="/static/Img/icons8-linkedin-2-32.png" class="text-base"></a>
+                <a target="_blank" href="mailto:swamynath633@gmail.com"><img src="/static/Img/icons8-gmail-logo-32.png"
+                        class="text-base"></a>
+            </span>
+</footer>
+
 </body>
 </html>

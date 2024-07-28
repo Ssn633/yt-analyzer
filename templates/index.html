@@ -40,10 +40,8 @@
     </div>
     <div class="container mx-auto bg-gray-400  p-6 rounded-lg shadow-lg max-w-md">
         <h1 class="text-2xl font-bold mb-4">Upload a File</h1>
-        <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" class="space-y-4">
-            <input type="file" name="file" accept=".json" class="block w-full text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-            <input type="submit" value="Upload" class="w-full bg-gray-200 text-gray-900 py-2 px-4 rounded hover:text-gray-200 hover:bg-gray-900 cursor-pointer transition">
-        </form>
+        <input type="file" id="fileInput" accept=".json" class="block w-full text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+        <button onclick="uploadFile()" class="w-full bg-gray-200 text-gray-900 py-2 px-4 rounded hover:text-gray-200 hover:bg-gray-900 cursor-pointer transition">Upload</button>
     </div>
     </div>
     <footer id="Contact"
@@ -62,6 +60,44 @@
                         class="text-base"></a>
             </span>
 </footer>
+<script>
+    async function uploadFile() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        const chunkSize = 4 * 1024 * 1024; // 4MB chunks
+        const totalChunks = Math.ceil(file.size / chunkSize);
 
+        for (let i = 0; i < totalChunks; i++) {
+            const start = i * chunkSize;
+            const end = Math.min(start + chunkSize, file.size);
+            const chunk = file.slice(start, end);
+            const formData = new FormData();
+            formData.append('chunk', chunk);
+            formData.append('chunkIndex', i);
+            formData.append('totalChunks', totalChunks);
+            formData.append('fileName', file.name);
+
+            await fetch('/upload_chunk', {
+                method: 'POST',
+                body: formData
+            });
+        }
+
+        // After all chunks are uploaded, notify the server to assemble them
+        const response = await fetch('/assemble_chunks', {
+            method: 'POST',
+            body: JSON.stringify({ fileName: file.name }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            window.location.href = '/upload_success?fileName=' + file.name;
+        } else {
+            alert('Error during file assembly');
+        }
+    }
+</script>
 </body>
 </html>
